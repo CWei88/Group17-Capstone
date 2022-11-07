@@ -13,7 +13,7 @@ from keras.preprocessing.text import Tokenizer
 from keras.preprocessing import sequence
 from keras.utils import pad_sequences
 
-from prepro import preprocessing, keyword_filter, word_embedding
+from prepro import pre_processing, keyword_filter, word_embedding
 
 class Attribute17(BaseEstimator):
     def __init__(self):
@@ -23,11 +23,11 @@ class Attribute17(BaseEstimator):
         self.tok = pickle.load(open('tok_17_model.sav', 'rb'))
 
     def predict(self, df):
-        df = preprocessing(df)
         df = keyword_filter(df, ['compensation', 'remuneration'])
-        X = word_embedding(df, 'words', 17)
+        df['preprocessed'] = df['sentence'].apply(lambda x: pre_processing(x))
+        X = word_embedding(df, 'sentence', 17)
     
-        df_word = df['words']
+        df_word = df['sentence']
         test = self.tok.texts_to_sequences(df_word)
         test_matrix = pad_sequences(test, maxlen=100)
     
@@ -44,11 +44,5 @@ class Attribute17(BaseEstimator):
         ## Returns 1s only
         df_ones = df[df['flag'] == 1]
     
-        df_ones = df_ones[['words', 'flag']]
+        df_ones = df_ones[['sentence', 'flag']]
         return df_ones
-
-file_name = input("Please enter file name:")
-df = pd.read_csv(file_name)
-att = Attribute17(df)
-res = att.predict()
-print(res)

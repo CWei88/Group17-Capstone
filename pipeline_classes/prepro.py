@@ -32,9 +32,8 @@ nltk.download('stopwords')
 nltk.download('omw-1.4')
 
 # Pdf Extraction Model
-import spacy
-spacy.cli.download("en_core_web_sm")
-nlp = spacy.load("en_core_web_sm", disable=['ner'])
+import en_core_web_sm
+nlp = en_core_web_sm.load()
 
 #Gensim stopwords
 import gensim
@@ -56,13 +55,12 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+import tensorflow as tf
 from keras.models import Sequential, load_model
 from keras.layers import Dense, LSTM, Embedding, Dropout
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing import sequence
 from keras.utils import pad_sequences
-
-from imblearn.over_sampling import RandomOverSampler
 
 import torch
 from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
@@ -70,7 +68,6 @@ from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
 import spacy
 from spacy.matcher import Matcher 
 from spacy.tokens import Span 
-nlp = spacy.load('en_core_web_sm')
 
 def clean(line):
     line = re.sub(r'[0-9\.]+', '', line) # remove digits
@@ -96,7 +93,7 @@ def pre_processing(line):
         
     return ' '.join([token for token in preprocessed_line if token != ''])
     
-def keyword_filter(self, df, keywords, column='sentence'):
+def keyword_filter(df, keywords, column='sentence'):
     filtered = []
     for s in np.array(df[column]):
         sentence = s.lower()
@@ -126,14 +123,14 @@ def word_embedding(df, embed_column, attribute_no, embedding_model='tfidf'):
         raise Exception("No model found")
         
 def qa_filtering(df):
-    model_name = "deepset/roberta-base-squad2"
+    model_name = "bert_model"
     nlp = pipeline('question-answering', model=model_name, tokenizer=model_name)
 
     res = []
     q1 = 'Who audited the targets?'
     q2 = 'Who assured the targets?'
     q3 = 'Who verified the targets?'
-    for i in df['words']:
+    for i in df['sentence']:
         QA_1 = {
             'question': q1,
             'context': i
@@ -176,7 +173,7 @@ def is_quantitative(x):
 
     return re.search("supplier", x) and len(re.findall(r'\d+', x)) > 0
 
-def stop_words_removal(sentence):
+def stop_words_removal(sentence, stop_words):
     words = sentence.split()
     removed_sentence=[]
     for r in words:

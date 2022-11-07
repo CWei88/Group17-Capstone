@@ -8,18 +8,21 @@ import pandas as pd
 import pickle
 
 class Attribute16:
-    def __init__(self):
-        self.vectorizer = pickle.load(open('tfidf_16_model.pkl', 'rb'))
-
-    def fit(self, X, y=None):
-        return self
+    def __init__(self, threshold=60):
+        train_data = pd.read_csv('transition_data.csv')
+        self.X = train_data[train_data['have_transition_plan']]['corpus']
+        self.vectorizer = TfidfVectorizer()
+        self.tf_idf_matrix = self.vectorizer.fit_transform(self.X)
+        self.threshold = threshold
 
     def predict(self, df, column='sentence'):
         X = df[column]
         X_vectorized = self.vectorizer.transform(X)
+        predict = []
         for i in range(self.tf_idf_matrix.shape[0]):
-            cosine = cosine_similarity(self.tf_idf_matrix[i], input_vec)[0]
+            cosine = cosine_similarity(self.tf_idf_matrix[i], X_vectorized)[0]
             angle_list = np.rad2deg(np.arccos(cosine))
             predict.append(min(angle_list) <= self.threshold)
-        df['flag'] = predict.astype(int)
-        return df
+        df_res = df.copy()        
+        df_res['flag'] = list(map(int, predict))
+        return df_res

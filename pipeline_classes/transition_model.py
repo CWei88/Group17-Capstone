@@ -15,6 +15,7 @@ class TransitionPlanModel(BaseEstimator):
     def fit(self, X, y=None):
         self.tf_idf_matrix = self.classifier.fit_transform(X)
         pickle.dump(self.classifier, open('tfidf_16_model.pkl', 'wb'))
+        pickle.dump(self.tf_idf_matrix, open('tfidf_16_matrix.pkl', 'wb'))
         return self
     
     def predict(self, X):
@@ -32,5 +33,6 @@ X = transition_df[transition_df["have_transition_plan"]]["corpus"]
 X_train , X_test = train_test_split(X,test_size=0.2)
 
 transitionModel = TransitionPlanModel(threshold = 60)
-transitionModel.fit(X=X_train)
-print(transitionModel.predict(X_test))
+transitionModel.fit(X=X)
+test = pd.read_csv('ubm.csv')
+print(transitionModel.predict(test['sentence']))

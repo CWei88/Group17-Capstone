@@ -20,7 +20,6 @@ from gensim.models import CoherenceModel
 import string
 import re
 import io
-import tensorflow as tf
 
 import nltk
 from nltk.stem.snowball import SnowballStemmer
@@ -32,24 +31,22 @@ import en_core_web_sm
 nlp = en_core_web_sm.load(disable=['ner'])
 
 from sklearn.feature_extraction import text
-stop_words = text.ENGLISH_STOP_WORDS.union(stop_words)
 import pickle 
-
+import tensorflow as tf
 from prepro import pre_processing, keyword_filter, stop_words_removal, porter_stemmer, custom_standardization
 
-class Attribute8:
-
+class Attribute12:
     def __init__(self):
-        self.model = pickle.load(open('model_8.pkl', 'rb'))
-        self.vectorizer = pickle.load(open('vectorizer_8.pkl', 'rb'))
+        self.model = pickle.load(open('model_12.pkl', 'rb'))
+        self.vectorizer = pickle.load(open('vectorizer_12.pkl', 'rb'))
         self.stop_words = text.ENGLISH_STOP_WORDS.union(stop_words)
+        
 
-    def predict(self, df, column='sentence'):
-        df = keyword_filter(df,['biodiversity','green space','program','animal','fish','bird','avian','tree','forest','coastal','beach','shoreline',
-                                         'clean-up','specie','ecosystem','system','project','protection','conservation','natural resources','wildlife','habitat'])
+    def predict(self, df):
+        df = keyword_filter(df,['net-zero','net-zero','carbon neutral','commitment','target','long term','2030','2040','2045','2050',' neutrality','carbon free','carbon-free','zero emission','zero GHG emission','zero CO2 emission','SBTi','Science Based Targets initiative'])
         df = df.reset_index()
         df['sentence1'] = df['sentence'].apply(lambda x:tf.compat.as_str_any(custom_standardization(x).numpy()))
-        df['sentence1'] = df['sentence1'].apply(lambda x:stop_words_removal(str(x), stop_words))
+        df['sentence1'] = df['sentence1'].apply(lambda x:stop_words_removal(str(x), self.stop_words))
         df['sentence1'] = df['sentence1'].apply(lambda x:porter_stemmer(str(x)))
         X = self.vectorizer.transform(df['sentence'])
         res = self.model.predict(X)

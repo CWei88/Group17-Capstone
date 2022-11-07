@@ -12,10 +12,9 @@ class Attribute15:
         self.lr_model = pickle.load(open('lr_15_model.sav', 'rb'))
 
     def predict(self, df):
-        df = preprocessing(self.df)
-        df = keyword_filer(df, ['assurance', 'limited assurance',
-                                'externally verified', 'independent', 'third-party'])
-        X = word_embedding(df, 'words', 15)
+        df = keyword_filter(df, ['assurance', 'limited assurance', 'externally verified', 'independent', 'third-party'])
+        df['preprocessed'] = df['sentence'].apply(lambda x: pre_processing(x))
+        X = word_embedding(df, 'sentence', 15)
 
         lr_pred = self.lr_model.predict(X)
 
@@ -25,6 +24,6 @@ class Attribute15:
         res = qa_filtering(df_ones)
         df_ones['auditors'] = res
 
-        df_ones = df_ones[['words', 'auditors', 'flag']]
+        df_ones = df_ones[['sentence', 'auditors', 'flag']]
         return df_ones
     

@@ -22,14 +22,14 @@ stopwords = gensim.parsing.preprocessing.STOPWORDS
 
 from prepro import pre_processing, keyword_filter, is_quantitative
 
-class Attribute23:
+class Attribute25:
     def __init__(self):
         relevance_vectorizer = pickle.load(open('relevance_vectorizer.pkl', 'rb'))
         relevance_model = pickle.load(open('relevance_rf.pkl', 'rb'))
         scale_vectorizer = pickle.load(open('scale_vectorizer.pkl', 'rb'))
         scale_model = load_model('scale_nn.h5')        
 
-    def pred_helper(X, vectorizer, model, pred_type):
+    def pred_helper(self, X, vectorizer, model, pred_type):
         X_vec = pd.DataFrame(vectorizer.transform(X['preprocessed']).todense(), columns=vectorizer.get_feature_names_out())
         if pred_type == 'relevance':
             y_pred = model.predict(X_vec)
@@ -48,8 +48,8 @@ class Attribute23:
         df_filtered['preprocessed'] = df_filtered['sentence'].apply(lambda x: pre_processing(x))
 
         # predict
-        relevance = predict(df_filtered, relevance_vectorizer, relevance_model, 'relevance')
-        scale = predict(relevance[relevance['pred_label'] == True], scale_vectorizer, scale_model, 'scale')
+        relevance = self.pred_helper(df_filtered, relevance_vectorizer, relevance_model, 'relevance')
+        scale = self.pred_helper(relevance[relevance['pred_label'] == True], scale_vectorizer, scale_model, 'scale')
 
         # get final results
         relevance['quantitative'] = relevance['sentence'].apply(lambda x: is_quantitative(x))

@@ -15,9 +15,6 @@ import nltk
 from nltk.tokenize import TreebankWordTokenizer
 from nltk.stem.snowball import SnowballStemmer
 from nltk.tokenize import RegexpTokenizer
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('omw-1.4')
 
 import pickle
 
@@ -31,11 +28,12 @@ from imblearn.over_sampling import RandomOverSampler
 import spacy
 from spacy.matcher import Matcher 
 from spacy.tokens import Span 
-nlp = spacy.load('en_core_web_sm')
+import en_core_web_sm
+nlp = en_core_web_sm.load()
 
 from prepro import pre_processing, keyword_filter, word_embedding
 
-class Attribute14:
+class Attribute14():
 
     def __init__(self):
         self.lr_model = pickle.load(open('lr_14_model.sav', 'rb'))
@@ -44,9 +42,9 @@ class Attribute14:
 
     
     def predict(self, df):
-        df = preprocessing(df)
         df = keyword_filter(df, ['ghg', 'sbti', 'tcfd', 'sasb', r'scope /d'])
-        X = word_embedding(df, 'words', 14)
+        df['preprocessed'] = df['sentence'].apply(lambda x: pre_processing(x))
+        X = word_embedding(df, 'sentence', 14)
 
 
         lr_pred = self.lr_model.predict(X)
@@ -65,15 +63,15 @@ class Attribute14:
 
         for index, rows in df_ones.iterrows():
             res = []
-            if ('ghg' in rows['words'].lower()) or (r'scope \d' in rows['words'].lower()):
+            if ('ghg' in rows['sentence'].lower()) or (r'scope \d' in rows['sentence'].lower()):
                 res.append('GHG')
-            if ('sbti' in rows['words'].lower()) or ('science based targets' in rows['words'].lower()):
+            if ('sbti' in rows['sentence'].lower()) or ('science based targets' in rows['sentence'].lower()):
                 res.append('SBTi')
-            if ('tcfd' in rows['words'].lower()) or ('climate-related financial disclosures' in rows['words'].lower()):
+            if ('tcfd' in rows['sentence'].lower()) or ('climate-related financial disclosures' in rows['sentence'].lower()):
                 res.append('TCFD')
-            if ('sasb' in rows['words'].lower()) or ('sustainability accounting' in rows['words'].lower()):
+            if ('sasb' in rows['sentence'].lower()) or ('sustainability accounting' in rows['sentence'].lower()):
                 res.append('SASB')
 
             df_ones.at[index, 'methodologies'] = str(res)
-        df_ones = df_ones[['words', 'methodologies', 'flag']]
+        df_ones = df_ones[['sentence', 'methodologies', 'flag']]
         return df_ones
