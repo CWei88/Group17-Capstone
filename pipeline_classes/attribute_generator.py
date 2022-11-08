@@ -21,7 +21,7 @@ class AttrGen:
         self.answer12, self.df_12 = Attribute12.Attribute12().predict(self.df)
         self.df_14 = Attribute14.Attribute14().predict(self.df)
         self.df_15 = Attribute15.Attribute15().predict(self.df)
-        self.df_16 = Attribute16.Attribute16(60).predict(self.df)
+        self.df_16 = Attribute16.Attribute16().predict(self.df)
         self.df_17 = Attribute17.Attribute17().predict(self.df)
         self.df_23 = Attribute23.Attribute23().predict(self.df)
         self.df_25, relevant = Attribute25.Attribute25().predict(self.df)

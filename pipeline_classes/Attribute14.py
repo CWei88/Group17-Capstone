@@ -44,23 +44,26 @@ class Attribute14():
     def predict(self, df):
         df = keyword_filter(df, ['ghg', 'sbti', 'tcfd', 'sasb', r'scope /d'])
         df['preprocessed'] = df['sentence'].apply(lambda x: pre_processing(x))
-        X = word_embedding(df, 'sentence', 14)
-
-
-        lr_pred = self.lr_model.predict(X)
-        rf_pred = self.rf_model.predict(X)
-        ada_pred = self.ada_model.predict(X)
-
+        if df.empty:
+            return df
+        X = word_embedding(df, 'preprocessed', 14)
+        lr_model = pickle.load(open('lr_14_model.sav', 'rb'))
+        rf_model = pickle.load(open('rf_14_model.sav', 'rb'))
+        svc_model = pickle.load(open('svc_14_model.pkl', 'rb'))
+        
+        lr_pred = lr_model.predict(X)
+        rf_pred = rf_model.predict(X)
+        svc_pred = svc_model.predict(X)
+       
         ## Ensemble voting
-        df_combi = pd.DataFrame([lr_pred, rf_pred, ada_pred]).transpose()
+        df_combi = pd.DataFrame([lr_pred, rf_pred, svc_pred]).transpose()
         df_combi['total'] = df_combi.mode(axis=1)[0]
         df = df.reset_index()
         df['flag'] = df_combi['total']
-        print(df)
-
+        
         ### return 1s only
         df_ones = df[df['flag'] == 1]
-
+        
         for index, rows in df_ones.iterrows():
             res = []
             if ('ghg' in rows['sentence'].lower()) or (r'scope \d' in rows['sentence'].lower()):
@@ -71,7 +74,7 @@ class Attribute14():
                 res.append('TCFD')
             if ('sasb' in rows['sentence'].lower()) or ('sustainability accounting' in rows['sentence'].lower()):
                 res.append('SASB')
-
+        
             df_ones.at[index, 'methodologies'] = str(res)
         df_ones = df_ones[['sentence', 'methodologies', 'flag']]
         return df_ones

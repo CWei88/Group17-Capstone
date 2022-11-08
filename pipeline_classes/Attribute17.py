@@ -25,24 +25,20 @@ class Attribute17(BaseEstimator):
     def predict(self, df):
         df = keyword_filter(df, ['compensation', 'remuneration'])
         df['preprocessed'] = df['sentence'].apply(lambda x: pre_processing(x))
-        X = word_embedding(df, 'sentence', 17)
-    
-        df_word = df['sentence']
-        test = self.tok.texts_to_sequences(df_word)
-        test_matrix = pad_sequences(test, maxlen=100)
-    
-        lr_pred = self.lr.predict(X)
-        lstm_pred = np.where(self.lstm.predict(test_matrix) < 0.5, 0, 1)
-        ada_pred = self.ada.predict(X)
-    
-        ## Ensemble Voting
-        df_combi = pd.DataFrame([lr_pred, lstm_pred, ada_pred]).transpose()
-        df_combi['majority'] = df_combi.mode(axis=1)[0]
-        df = df.reset_index()
-        df['flag'] = df_combi['majority']
-    
+        if df.empty:
+            return df
+        X = word_embedding(df, 'preprocessed', 17)
+        
+        lr_model = pickle.load(open('lr_17_model.sav', 'rb'))
+        ada_model = pickle.load(open('ada_17_model.sav', 'rb'))
+        
+        
+        ada_pred = ada_model.predict(X)
+        
+        df['flag'] = ada_pred
+        
         ## Returns 1s only
         df_ones = df[df['flag'] == 1]
-    
+        
         df_ones = df_ones[['sentence', 'flag']]
         return df_ones
