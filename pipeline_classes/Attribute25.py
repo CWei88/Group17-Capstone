@@ -11,11 +11,8 @@ import pickle
 import nltk
 from nltk.tokenize import TreebankWordTokenizer
 from nltk.stem.snowball import SnowballStemmer
-from nltk.stem import WordNetLemmatizer 
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('omw-1.4')
-nltk.download('wordnet')
+from nltk.stem import WordNetLemmatizer
+
 import gensim
 from gensim.parsing.preprocessing import remove_stopwords
 stopwords = gensim.parsing.preprocessing.STOPWORDS

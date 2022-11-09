@@ -12,8 +12,8 @@ import pandas as pd
 
 import en_core_web_sm
 class AttrGen:
-    def __init__(self, csv):
-        self.df = pd.read_csv(csv)
+    def __init__(self, df):
+        self.df = df
 
     def run(self):
         self.df_7 = Attribute15.Attribute15().predict(self.df)

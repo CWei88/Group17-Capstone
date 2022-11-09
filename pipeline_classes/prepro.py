@@ -56,6 +56,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 import tensorflow as tf
+import keras
 from keras.models import Sequential, load_model
 from keras.layers import Dense, LSTM, Embedding, Dropout
 from keras.preprocessing.text import Tokenizer
@@ -92,6 +93,7 @@ def pre_processing(line):
     preprocessed_line = stemming(lemmatization(remove_stop_words(tokenized_line)))
         
     return ' '.join([token for token in preprocessed_line if token != ''])
+
     
 def keyword_filter(df, keywords, column='sentence'):
     filtered = []
