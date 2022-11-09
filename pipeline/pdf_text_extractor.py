@@ -30,10 +30,6 @@ from nltk.tokenize import TreebankWordTokenizer
 from nltk.stem.snowball import SnowballStemmer
 from nltk.stem import WordNetLemmatizer 
 from nltk.tokenize import RegexpTokenizer
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('omw-1.4')
-nltk.download('wordnet')
 
 import en_core_web_sm
 

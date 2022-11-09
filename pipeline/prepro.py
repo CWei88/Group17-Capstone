@@ -27,9 +27,6 @@ import nltk
 from nltk.stem.snowball import SnowballStemmer
 from nltk.stem import PorterStemmer, LancasterStemmer, WordNetLemmatizer
 from nltk.tokenize import TreebankWordTokenizer, RegexpTokenizer, sent_tokenize, word_tokenize
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('omw-1.4')
 
 # Pdf Extraction Model
 import en_core_web_sm

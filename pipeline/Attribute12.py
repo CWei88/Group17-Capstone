@@ -23,6 +23,7 @@ import io
 
 import nltk
 from nltk.stem.snowball import SnowballStemmer
+nltk.download('stopwords')
 
 # NLTK Stop words
 from nltk.corpus import stopwords
@@ -30,7 +31,6 @@ stop_words = stopwords.words('english')
 import en_core_web_sm
 nlp = en_core_web_sm.load(disable=['ner'])
 
-from sklearn.feature_extraction import text
 import pickle 
 import tensorflow as tf
 from prepro import pre_processing, keyword_filter, stop_words_removal, porter_stemmer, custom_standardization
@@ -39,7 +39,7 @@ class Attribute12:
     def __init__(self):
         self.model = pickle.load(open('models/model_12.pkl', 'rb'))
         self.vectorizer = pickle.load(open('models/vectorizer_12.pkl', 'rb'))
-        self.stop_words = text.ENGLISH_STOP_WORDS.union(stop_words)
+        self.stop_words = stopwords.words('english')
         
 
     def predict(self, df):
