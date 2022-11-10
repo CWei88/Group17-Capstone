@@ -1,4 +1,4 @@
-# Using Machine Learning to explore decarbonisation strategies
+## Using Machine Learning to explore decarbonisation strategies
 This project aims to utilise machine learning techniques such as pdf text extraction, image processing and text classification to generate insights related to the environmental aspect of ESG. Through this process, we will be extracting textual and table information from sustainability reports
 
 ## Getting Started
