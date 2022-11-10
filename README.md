@@ -10,9 +10,11 @@ To start this project, you can either clone this repository to your local comput
 
 where pth is the path to reach requirements.txt.
 
-To run the application, please use the following command with either the command prompt or the terminal:
+To run the application, please use either of the following command with either the command prompt or the terminal:
 
 `python main.py`
+
+`python3 main.py`
 
 and follow the instructions displayed on the command prompt/terminal.
 
