@@ -72,6 +72,6 @@ class Attribute14():
             if ('sasb' in rows['sentence'].lower()) or ('sustainability accounting' in rows['sentence'].lower()):
                 res.append('SASB')
         
-            df_ones.at[index, 'methodologies'] = str(res)
+            df_ones.at[index, 'methodologies'] = ','.join(res)
         df_ones = df_ones[['sentence', 'methodologies', 'flag']]
         return df_ones
