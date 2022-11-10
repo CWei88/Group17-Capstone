@@ -24,14 +24,14 @@ class AttrGen:
         self.df_16 = Attribute16.Attribute16().predict(self.df)
         self.df_17 = Attribute17.Attribute17().predict(self.df)
         self.df_23 = Attribute23.Attribute23().predict(self.df)
-        self.df_25, relevant = Attribute25.Attribute25().predict(self.df)
+        score, self.df_25 = Attribute25.Attribute25().predict(self.df)
 
     ## Getter functions for each attribute
     def get_df7(self):
         cols = list(self.df_7.columns)
         for i in cols:
             print(self.df_7[i])
-        return self.df_7['sentence']
+        return self.df_7
 
     def get_df8(self, answer=True):
         cols = list(self.df_8.columns)
@@ -40,7 +40,7 @@ class AttrGen:
         for i in cols:
             print(self.df_8[i])
 
-        return self.df_8['sentence']
+        return self.df_8
 
     def get_df12(self, answer=True):
         cols = list(self.df_12.columns)
@@ -48,48 +48,50 @@ class AttrGen:
             print(self.answer12)
         for i in cols:
             print(self.df_12[i])
-        return self.df_12['sentence']
+        return self.df_12
 
     def get_df14(self):
         cols = list(self.df_14.columns)
         for i in cols:
             print(self.df_14[i])
 
-        return self.df_14['sentence']
+        return self.df_14
     
     def get_df15(self):
         cols = list(self.df_15.columns)
         for i in cols:
             print(self.df_15[i])
 
-        return self.df_15['sentence']
+        return self.df_15
     
     def get_df16(self):
         cols = list(self.df_16.columns)
         for i in cols:
             print(self.df_16[i])
 
-        return self.df_16['sentence']
+        return self.df_16
 
     def get_df17(self):
         cols = list(self.df_17.columns)
         for i in cols:
             print(self.df_17[i])
 
-        return self.df_17['sentence']
+        return self.df_17
 
     def get_df23(self):
         cols = list(self.df_23.columns)
         for i in cols:
             print(self.df_23[i])
 
-        return self.df_23['sentence']
+        return self.df_23
 
-    def get_df25(self):
+    def get_df25(self, score=True):
         cols = list(self.df_25.columns)
+        if score:
+            print(self.score)
         for i in cols:
             print(self.df_25[i])
 
-        return self.df_25['sentence']
+        return self.df_25
         
         
