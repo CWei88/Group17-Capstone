@@ -10,6 +10,8 @@ To start this project, you can either clone this repository to your local comput
 
 where pth is the path to reach requirements.txt.
 
+In addition, we recommend installing the [deepset/roberta-base-squad2](https://huggingface.co/deepset/roberta-base-squad2/tree/main) and store them in the `pipeline/bert_model` folder to reduce initial set-up time. If not, please specify `2` when running the application to download deepset/roberta-base-squad2 to run the model.
+
 To run the application, please use either of the following command with either the command prompt or the terminal:
 
 `python main.py`
