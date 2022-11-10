@@ -200,3 +200,7 @@ real_estate_images/Swire Pacific 2021 Sustainability Report.pdf670001-067.png
 real_estate_images/Swire Pacific 2021 Sustainability Report.pdf80001-008.png
 real_estate_images/Swire Pacific 2021 Sustainability Report.pdf880001-088.png
 page-0.png
+pipeline/bert_model/flax_model.msgpack
+pipeline/bert_model/pytorch_model.bin
+pipeline/bert_model/tf_model.h5
+pipeline/bert_model/rust_model.ot

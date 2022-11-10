@@ -108,11 +108,11 @@ def word_embedding(df, embed_column, attribute_no, embedding_model='tfidf'):
         X = df[embed_column]
         X = X.apply(lambda x: x.lower())
         if attribute_no == 14:
-            tfidf = pickle.load(open('models/tfidf_14_model.sav', 'rb'))
+            tfidf = pickle.load(open('pipeline/models/tfidf_14_model.sav', 'rb'))
         elif (attribute_no == 7) or (attribute_no == 15):
-            tfidf = pickle.load(open('models/tfidf_15_model.sav', 'rb'))
+            tfidf = pickle.load(open('pipeline/models/tfidf_15_model.sav', 'rb'))
         elif attribute_no == 17:
-            tfidf = pickle.load(open('models/tfidf_17_model.sav', 'rb'))
+            tfidf = pickle.load(open('pipeline/models/tfidf_17_model.sav', 'rb'))
         else:
             raise Exception(f"Wrong Model used for attribute: {attribute_no}")
         x = tfidf.transform(X)
@@ -121,8 +121,8 @@ def word_embedding(df, embed_column, attribute_no, embedding_model='tfidf'):
     else:
         raise Exception("No model found")
         
-def qa_filtering(df):
-    model_name = "bert_model"
+def qa_filtering(df, name='pipeline/bert_model'):
+    model_name = name
     nlp = pipeline('question-answering', model=model_name, tokenizer=model_name)
 
     res = []

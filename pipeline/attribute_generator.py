@@ -1,30 +1,31 @@
-import Attribute8
-import Attribute12
-import Attribute14
-import Attribute15
-import Attribute16
-import Attribute17
-import Attribute23
-import Attribute25
+import pipeline.Attribute8 as Attribute8
+import pipeline.Attribute12 as Attribute12
+import pipeline.Attribute14 as Attribute14
+import pipeline.Attribute15 as Attribute15
+import pipeline.Attribute16 as Attribute16
+import pipeline.Attribute17 as Attribute17
+import pipeline.Attribute23 as Attribute23
+import pipeline.Attribute25 as Attribute25
 
 import numpy as np
 import pandas as pd
 
 import en_core_web_sm
 class AttrGen:
-    def __init__(self, df):
+    def __init__(self, df, bert_model='pipeline/bert_model'):
         self.df = df
+        self.bert_model = bert_model
 
     def run(self):
         self.df_7 = Attribute15.Attribute15().predict(self.df)
         self.answer8, self.df_8 = Attribute8.Attribute8().predict(self.df)
         self.answer12, self.df_12 = Attribute12.Attribute12().predict(self.df)
         self.df_14 = Attribute14.Attribute14().predict(self.df)
-        self.df_15 = Attribute15.Attribute15().predict(self.df)
+        self.df_15 = Attribute15.Attribute15(self.bert_model).predict(self.df)
         self.df_16 = Attribute16.Attribute16().predict(self.df)
         self.df_17 = Attribute17.Attribute17().predict(self.df)
         self.df_23 = Attribute23.Attribute23().predict(self.df)
-        score, self.df_25 = Attribute25.Attribute25().predict(self.df)
+        self.score, self.df_25 = Attribute25.Attribute25().predict(self.df)
 
     ## Getter functions for each attribute
     def get_df7(self):

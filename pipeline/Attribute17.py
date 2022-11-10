@@ -13,11 +13,11 @@ from keras.preprocessing.text import Tokenizer
 from keras.preprocessing import sequence
 from keras.utils import pad_sequences
 
-from prepro import pre_processing, keyword_filter, word_embedding
+from pipeline.prepro import pre_processing, keyword_filter, word_embedding
 
 class Attribute17(BaseEstimator):
     def __init__(self):
-        self.ada = pickle.load(open('models/ada_17_model.sav', 'rb'))
+        self.ada = pickle.load(open('pipeline/models/ada_17_model.sav', 'rb'))
 
     def predict(self, df):
         df = keyword_filter(df, ['compensation', 'remuneration'])
@@ -25,8 +25,6 @@ class Attribute17(BaseEstimator):
         if df.empty:
             return df
         X = word_embedding(df, 'preprocessed', 17)
-        
-        ada_model = pickle.load(open('ada_17_model.sav', 'rb'))
         
         ada_pred = self.ada.predict(X)
         

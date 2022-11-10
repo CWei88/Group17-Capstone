@@ -31,14 +31,14 @@ from spacy.tokens import Span
 import en_core_web_sm
 nlp = en_core_web_sm.load()
 
-from prepro import pre_processing, keyword_filter, word_embedding
+from pipeline.prepro import pre_processing, keyword_filter, word_embedding
 
 class Attribute14():
 
     def __init__(self):
-        self.lr_model = pickle.load(open('models/lr_14_model.sav', 'rb'))
-        self.rf_model = pickle.load(open('models/rf_14_model.sav', 'rb'))
-        self.svc_model = pickle.load(open('models/svc_14_model.pkl', 'rb'))
+        self.lr_model = pickle.load(open('pipeline/models/lr_14_model.sav', 'rb'))
+        self.rf_model = pickle.load(open('pipeline/models/rf_14_model.sav', 'rb'))
+        self.svc_model = pickle.load(open('pipeline/models/svc_14_model.pkl', 'rb'))
 
     
     def predict(self, df):

@@ -33,12 +33,12 @@ nlp = en_core_web_sm.load(disable=['ner'])
 
 import pickle 
 import tensorflow as tf
-from prepro import pre_processing, keyword_filter, stop_words_removal, porter_stemmer, custom_standardization
+from pipeline.prepro import pre_processing, keyword_filter, stop_words_removal, porter_stemmer, custom_standardization
 
 class Attribute12:
     def __init__(self):
-        self.model = pickle.load(open('models/model_12.pkl', 'rb'))
-        self.vectorizer = pickle.load(open('models/vectorizer_12.pkl', 'rb'))
+        self.model = pickle.load(open('pipeline/models/model_12.pkl', 'rb'))
+        self.vectorizer = pickle.load(open('pipeline/models/vectorizer_12.pkl', 'rb'))
         self.stop_words = stopwords.words('english')
         
 

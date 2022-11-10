@@ -15,9 +15,9 @@ from tabula import read_pdf
 import io
 from functools import reduce
 from pdfminer.high_level import extract_text
-import pdf2image
 
 import re
+import fitz
 
 class ImageExtractor:
     def __init__(self, pdf):
@@ -46,10 +46,16 @@ class ImageExtractor:
             page_with_keywords = table_pages
         
         ##Extract images
+        doc = fitz.open(self.pdf)
         for i in page_with_keywords:
             print(f"Extracting page: {i}")
-            pdf2image.convert_from_path(self.pdf, output_folder = output_path, fmt='png', 
-                                       first_page = i, last_page = i, output_file = str(self.pdf).split('.')[0] + str(i))
+            page = doc.load_page(i-1)
+            pix = page.get_pixmap()
+            output_name = self.pdf.split('/')[-1]
+            output_name = output_name.split('.')[0]
+            output = output_name + '_page_' + str(i) + '.png'
+            pix.save(output_path + '/' + output)
+            #pdf2image.convert_from_path(self.pdf, output_folder = output_path, fmt='png', first_page = i, last_page = i, output_file = str(self.pdf).split('.')[0] + str(i))
         
         print('Finished with file: ' + self.pdf)
         return ""

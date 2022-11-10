@@ -11,11 +11,11 @@ import nltk
 from nltk.stem.snowball import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
 
-from prepro import stemming, lemmatization, remove_stop_words
+from pipeline.prepro import stemming, lemmatization, remove_stop_words
 
 class Attribute16:
     def __init__(self, threshold=0.5):
-        train_data = pd.read_csv('transition_data.csv')
+        train_data = pd.read_csv('pipeline/transition_data.csv')
         self.X = train_data[train_data['have_transition_plan']]['corpus']
         self.X = lemmatization(stemming(remove_stop_words(self.X)))
         self.vectorizer = TfidfVectorizer()

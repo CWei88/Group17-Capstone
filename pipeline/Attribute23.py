@@ -17,15 +17,15 @@ import gensim
 from gensim.parsing.preprocessing import remove_stopwords
 stopwords = gensim.parsing.preprocessing.STOPWORDS
 
-from prepro import pre_processing, keyword_filter, is_quantitative
+from pipeline.prepro import pre_processing, keyword_filter, is_quantitative
 
 class Attribute23:
 
     def __init__(self):
-        self.relevance_vectorizer = pickle.load(open('models/relevance_vectorizer.pkl', 'rb'))
-        self.relevance_model = pickle.load(open('models/relevance_rf.pkl', 'rb'))
-        self.scale_vectorizer = pickle.load(open('models/scale_vectorizer.pkl', 'rb'))
-        self.scale_model = load_model('models/scale_nn.h5')        
+        self.relevance_vectorizer = pickle.load(open('pipeline/models/relevance_vectorizer.pkl', 'rb'))
+        self.relevance_model = pickle.load(open('pipeline/models/relevance_rf.pkl', 'rb'))
+        self.scale_vectorizer = pickle.load(open('pipeline/models/scale_vectorizer.pkl', 'rb'))
+        self.scale_model = load_model('pipeline/models/scale_nn.h5')        
 
     def pred_helper(self, X, vectorizer, model, pred_type):
         X_vec = pd.DataFrame(vectorizer.transform(X['preprocessed']).todense(), columns=vectorizer.get_feature_names_out())

@@ -3,7 +3,7 @@ import pandas as pd
 from pathlib import Path
 
 import pipeline.attribute_generator as ag
-import pipeline.image_extraction
+import pipeline.image_extraction as image_extraction
 from pipeline.pdf_text_extractor import extract_pages_sentences, extract_pdf
 import en_core_web_sm
 
@@ -16,7 +16,7 @@ if __name__ == '__main__':
         df = pd.DataFrame(corpus, columns=['sentence'])
         print(df)
 
-        image_extr = input("Do you want to extract images?")
+        image_extr = input("Do you want to extract images?[Y/N]")
         image_extr = image_extr.lower()
         if (image_extr == 'yes') or (image_extr == 'y'):
             output_file = input("Where do you want to output the images?")
@@ -25,13 +25,17 @@ if __name__ == '__main__':
     
     elif filename.endswith('.csv'):
         df = pd.read_csv(filename)
-    prgm = ag.AttrGen(df)
+
+    torf = input("Have you installed deepset/roberta-base-squad2 into bert_model folder?[Y/N]")
+    torf = torf.lower()
+    if (torf == 'y') or (torf == 'yes'):
+        bert_model = 'pipeline/bert_model'
+    else:
+        bert_model = 'deepset/roberta-base-squad2'
+    prgm = ag.AttrGen(df, bert_model)
     prgm.run()
     
-    output_csv_path = input("Where do you want to output the results?")
-    p = Path("/" + output_csv_path)
-    if not p.exists():
-        raise FileNotFoundError("Folder not found.")
+    output_csv_path = input("Where do you want to output the csv files?")
     
     df_7 = prgm.get_df7()
     df_8 = prgm.get_df8()
@@ -62,16 +66,19 @@ if __name__ == '__main__':
         df_23 = df_23[['sentence']]
     if not df_25.empty:
         df_25 = df_25[['sentence']]
-    
-    csv_name_7 = '/attribute_7.csv'
-    csv_name_8 = '/attribute_8.csv'
-    csv_name_12 = '/attribute_12.csv'
-    csv_name_14 = '/attribute_14.csv'
-    csv_name_15 = '/attribute_15.csv'
-    csv_name_16 = '/attribute_16.csv'
-    csv_name_17 = '/attribute_17.csv'
-    csv_name_23 = '/attribute_23.csv'
-    csv_name_25 = '/attribute_25.csv'
+
+    company_name = filename.split('/')[-1]
+    company_name = company_name.split('.')[0]
+    company_name = '/' + company_name
+    csv_name_7 = '_attribute_7.csv'
+    csv_name_8 = '_attribute_8.csv'
+    csv_name_12 = '_attribute_12.csv'
+    csv_name_14 = '_attribute_14.csv'
+    csv_name_15 = '_attribute_15.csv'
+    csv_name_16 = '_attribute_16.csv'
+    csv_name_17 = '_attribute_17.csv'
+    csv_name_23 = '_attribute_23.csv'
+    csv_name_25 = '_attribute_25.csv'
     
     attr_7 = '7'
     attr_8 = '8'
@@ -84,15 +91,15 @@ if __name__ == '__main__':
     attr_25 = '25'
     
     
-    df_7.to_csv(output_csv_path + csv_name_7, index=False))
-    df_8.to_csv(output_csv_path + csv_name_8, index=False))
-    df_12.to_csv(output_csv_path + csv_name_12, index=False))
-    df_14.to_csv(output_csv_path + csv_name_14, index=False))
-    df_15.to_csv(output_csv_path + csv_name_15, index=False))
-    df_16.to_csv(output_csv_path + csv_name_16, index=False))
-    df_17.to_csv(output_csv_path + csv_name_17, index=False))
-    df_23.to_csv(output_csv_path + csv_name_23, index=False))
-    df_25.to_csv(output_csv_path + csv_name_25, index=False))
+    df_7.to_csv(output_csv_path + company_name + csv_name_7, index=False)
+    df_8.to_csv(output_csv_path + company_name + csv_name_8, index=False)
+    df_12.to_csv(output_csv_path + company_name + csv_name_12, index=False)
+    df_14.to_csv(output_csv_path + company_name + csv_name_14, index=False)
+    df_15.to_csv(output_csv_path + company_name + csv_name_15, index=False)
+    df_16.to_csv(output_csv_path + company_name + csv_name_16, index=False)
+    df_17.to_csv(output_csv_path + company_name + csv_name_17, index=False)
+    df_23.to_csv(output_csv_path + company_name + csv_name_23, index=False)
+    df_25.to_csv(output_csv_path + company_name + csv_name_25, index=False)
     
     df_7['auditors'] = ','.join(list(df_7['auditors'].unique()))
     df_14['methodologies'] = ','.join(list(df_14['methodologies'].unique()))
@@ -114,7 +121,7 @@ if __name__ == '__main__':
     dfs = [df_7, df_8, df_12, df_14, df_15, df_16, df_17, df_23, df_25]
     resultant_df = pd.concat(dfs)
     
-    csv_name_all = 'combined_attributes.csv'
-    resultant_df.to_csv(output_csv_path + csv_name_all, index=False))
+    csv_name_all = '_combined_attributes.csv'
+    resultant_df.to_csv(output_csv_path + company_name + csv_name_all, index=False)
 
     

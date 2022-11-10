@@ -4,14 +4,15 @@ import pandas as pd
 import pickle
 
 from sklearn.linear_model import LinearRegression
-from prepro import pre_processing, keyword_filter, word_embedding, qa_filtering
+from pipeline.prepro import pre_processing, keyword_filter, word_embedding, qa_filtering
 
 class Attribute15:
 
-    def __init__(self):
-        self.ada = pickle.load(open('models/ada_15_model.pkl', 'rb'))
-        self.svc = pickle.load(open('mdoels/svc_15.pkl', 'rb'))
-        self.tfidf_2 = pickle.load(open('models/tfidf_15_2.pkl', 'rb'))
+    def __init__(self, bert_model='pipeline/bert_model'):
+        self.ada = pickle.load(open('pipeline/models/ada_15_model.pkl', 'rb'))
+        self.svc = pickle.load(open('pipeline/models/svc_15.pkl', 'rb'))
+        self.tfidf_2 = pickle.load(open('pipeline/models/tfidf_15_2.pkl', 'rb'))
+        self.bert_model = bert_model
 
     def predict(self, df, further_precision=True):
         df = keyword_filter(df, ['assurance', 'limited assurance', 'externally verified', 'independent', 'third-party'])
@@ -39,7 +40,7 @@ class Attribute15:
                 df_verified = pd.DataFrame()
 
             if not df_verified.empty:
-                res = qa_filtering(df_verified)
+                res = qa_filtering(df_verified, self.bert_model)
                 df_verified['auditors'] = res
                 df_verified = df_verified[['sentence', 'auditors', 'further_flag']]
                 return df_verified
