@@ -5,10 +5,13 @@ This project aims to utilise machine learning techniques such as pdf text extrac
 This project should be ran using Python 3.9.x, and utilise a combination of Python scripts, Jupyter Notebooks and open-source packages that would be required for the code to run. We have managed to run this project on a Windows PC, and thus alternative devices may showcase different performance. To run this program, please install the relevant packages using the command line with the following command.
 
 `pip install /pth/requirements.txt`
+
 where pth is the path to reach requirements.txt.
 
 To run the application, please use the following command with either the command prompt, or the terminal, using
+
 `python main.py`
+
 and follow the instructions on the terminal. 
 
 ## Built with
@@ -29,7 +32,8 @@ and follow the instructions on the terminal.
 * [transformers](https://pytorch.org/hub/huggingface_pytorch-transformers/)
 
 We would also like to thank Team08 for their help in the pdf text extraction process.
-[Github](https://github.com/jaokuean/team08-capstone)
+
+* [Github](https://github.com/jaokuean/team08-capstone)
 
 ## Contributors
 * Png Chen Wei
