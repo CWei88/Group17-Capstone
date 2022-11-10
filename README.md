@@ -2,17 +2,19 @@
 This project aims to utilise machine learning techniques such as pdf text extraction, image processing and text classification to generate insights related to the environmental aspect of ESG. Through this process, we will be extracting textual and table information from sustainability reports
 
 ## Getting Started
-This project should be ran using Python 3.9.x, and utilise a combination of Python scripts, Jupyter Notebooks and open-source packages that would be required for the code to run. We have managed to run this project on a Windows PC, and thus alternative devices may showcase different performance. To run this program, please install the relevant packages using the command line with the following command.
+This project utilises a combination of python scripts and open sourced packages, tested on Python 3.9.x to run smoothly. For the best experience, we suggestt to run this project on a Windows-based PC.
+
+To start this project, you can either clone this repository to your local computer, or download this repository as a zip file. Upon installation, please run the following commands in either the command line or the terminal:
 
 `pip install /pth/requirements.txt`
 
 where pth is the path to reach requirements.txt.
 
-To run the application, please use the following command with either the command prompt, or the terminal, using
+To run the application, please use the following command with either the command prompt or the terminal:
 
 `python main.py`
 
-and follow the instructions on the terminal. 
+and follow the instructions displayed on the command prompt/terminal.
 
 ## Built with
 * [gensim](https://github.com/RaRe-Technologies/gensim)
