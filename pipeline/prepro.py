@@ -68,22 +68,96 @@ from spacy.matcher import Matcher
 from spacy.tokens import Span 
 
 def clean(line):
+    '''
+    Removes digits and punctuation from the sentence.
+
+    Parameters
+    ----------
+    line: str
+        The sentence to be cleaned.
+
+    Returns
+    -------
+    line: str
+        The cleaned sentence.
+
+    '''
     line = re.sub(r'[0-9\.]+', '', line) # remove digits
     line = re.sub(r'[^\w\s]','', line) # remove punctuation
     return line
 
 def stemming(line):
+    '''
+    Performs stemming to a sentence, such as removing prefixes and suffixes to
+    get the original word without any transformation.
+
+    Parameters
+    ----------
+    line: str
+        The sentence to perform stemming.
+
+    Returns
+    -------
+    list of words: list of str
+        The list of stemmed words in the sentence.
+
+    '''
     stemmer = SnowballStemmer(language='english')
     return [stemmer.stem(token) for token in line]
 
 def lemmatization(line):
+    '''
+    Performs lemmatization to a sentence, which group words based on their lemma.
+
+    Parameters
+    ----------
+    line: str
+        The sentence to perform lemmatization
+
+    Returns
+    -------
+    list of words: list of str
+        The list of lemmatized words in the sentence.
+
+    '''
     lemmatizer = WordNetLemmatizer()
     return [lemmatizer.lemmatize(token) for token in line]
 
 def remove_stop_words(line):
+    '''
+    Removes stop words in a sentence, such as is, the, are, etc.
+    It retains the more relevant parts of the sentence and removes
+    frequently used words.
+
+    Parameters
+    ----------
+    line: str
+        The sentence to remove stop words.
+
+    Returns
+    -------
+    list of words: list of str
+        The list of words after stop words are removed.
+
+    '''
     return [remove_stopwords(token) for token in line]
 
 def pre_processing(line):
+    '''
+    Conducts the full preprocessing suite to a sentence, consisting of
+    tokenization, removing stop words, lemmatization and stemming.
+
+    Parameters
+    ----------
+    line: str
+        The sentence to be preprocessed.
+
+    Returns
+    -------
+    string: str
+        The sentence after preprocessing, chained together.
+
+    '''
     tokenizer = TreebankWordTokenizer()
 
     tokenized_line = tokenizer.tokenize(clean(line))
@@ -93,6 +167,29 @@ def pre_processing(line):
 
     
 def keyword_filter(df, keywords, column='sentence'):
+    '''
+    Performs keyword filtering to each sentence in a dataframe. For each sentence, it will keep the sentence if it contains the keyword,
+    and iterates through all the keywords provided.
+    Once filtering is completed on the dataframe, it will then aggregate the keyword of each sentence to return a list of keywords
+    that are found in the sentence.
+
+    Parameters
+    ----------
+    df: pandas DataFrame
+        The dataframe to perform keyword filtering on.
+    keywords: list of str.
+        The list of keywords that is used to filter if a sentence is relevant
+        to the keyword.
+    column: str
+        The column in the dataframe to perform keyword filtering on.
+        By default, the 'sentence' column is used.
+
+    Returns
+    -------
+    filtered_df: pandas DataFrame
+        The filtered dataframe containing sentences that match the keyword,
+        as well as the list of keywords related to the sentence.
+    '''
     filtered = []
     for s in np.array(df[column]):
         sentence = s.lower()

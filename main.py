@@ -7,6 +7,13 @@ import pipeline.image_extraction as image_extraction
 from pipeline.pdf_text_extractor import extract_pages_sentences, extract_pdf
 import en_core_web_sm
 
+'''
+The main python function to convert pdf to csv files, as well as extract relevant images from these files.
+
+To run it, you can either double click the main.py file, or enter python main.py in your terminal.
+
+'''
+
 if __name__ == '__main__':
     filename = input('What is the name of the file?')
     if filename.endswith('.pdf'):
@@ -46,26 +53,43 @@ if __name__ == '__main__':
     df_17 = prgm.get_df17()
     df_23 = prgm.get_df23()
     df_25 = prgm.get_df25()
-    
-    
+         
     if not df_7.empty:
         df_7 = df_7[['sentence', 'auditors']]
+    else:
+        df_7 = pd.DataFrame({'sentence': [""], 'attribute':[7], 'auditors':[""]})
     if not df_8.empty:
         df_8 = df_8[['sentence']]
+    else:
+        df_8 = pd.DataFrame({'sentence': [""], 'attribute':[8], 'additional_info':[""]})
     if not df_12.empty:
         df_12 = df_12[['sentence']]
+    else:
+        df_12 = pd.DataFrame({'sentence': [""], 'attribute':[12], 'additional_info':[""]})
     if not df_14.empty:
         df_14 = df_14[['sentence', 'methodologies']]
+    else:
+        df_14 = pd.DataFrame({'sentence': [""], 'attribute':[14], 'methodologies':[""]})
     if not df_15.empty:
         df_15 = df_15[['sentence', 'auditors']]
+    else:
+        df_15 = pd.DataFrame({'sentence': [""], 'attribute':[15], 'auditors':[""]}) 
     if not df_16.empty:
         df_16 = df_16[['sentence']]
+    else:
+        df_16 = pd.DataFrame({'sentence': [""], 'attribute':[16], 'additional_info':[""]})             
     if not df_17.empty:
         df_17 = df_17[['sentence']]
+    else:
+        df_17 = pd.DataFrame({'sentence': [""], 'attribute':[17], 'additional_info':[""]})               
     if not df_23.empty:
         df_23 = df_23[['sentence']]
+    else:
+        df_23 = pd.DataFrame({'sentence': [""], 'attribute':[23], 'additional_info':[""]})               
     if not df_25.empty:
         df_25 = df_25[['sentence']]
+    else:
+        df_25 = pd.DataFrame({'sentence': [""], 'attribute':[25], 'additional_info':[""]})     
 
     company_name = filename.split('/')[-1]
     company_name = company_name.split('.')[0]
@@ -104,9 +128,9 @@ if __name__ == '__main__':
     df_7['auditors'] = ','.join(list(df_7['auditors'].unique()))
     df_14['methodologies'] = ','.join(list(df_14['methodologies'].unique()))
     df_15['auditors'] = ','.join(list(df_15['auditors'].unique()))
-    df_7.rename(columns={'auditors': 'additional_info'})
-    df_14.rename(columns={'methodologies': 'additional_info'})
-    df_15.rename(columns={'auditors': 'additional_info'})
+    df_7 = df_7.rename(columns={'auditors': 'additional_info'})
+    df_14 = df_14.rename(columns={'methodologies': 'additional_info'})
+    df_15 = df_15.rename(columns={'auditors': 'additional_info'})
     
     df_7['attribute'] = attr_7
     df_8['attribute'] = attr_8
@@ -120,6 +144,12 @@ if __name__ == '__main__':
     
     dfs = [df_7, df_8, df_12, df_14, df_15, df_16, df_17, df_23, df_25]
     resultant_df = pd.concat(dfs)
+    resultant_df = resultant_df[['sentence', 'attribute', 'additional_info']]
+    resultant_df = resultant_df.drop(columns=['additional_info'])
+    resultant_df['attribute'] = resultant_df['attribute'].apply(lambda x: int(x))
+    resultant_df = resultant_df.groupby('attribute')['sentence'].apply('\n'.join).reset_index()
+    resultant_df = resultant_df[['sentence', 'attribute']]
+    resultant_df = resultant_df.sort_values('attribute')
     
     csv_name_all = '_combined_attributes.csv'
     resultant_df.to_csv(output_csv_path + company_name + csv_name_all, index=False)

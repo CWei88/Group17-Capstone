@@ -35,19 +35,49 @@ from pipeline.prepro import pre_processing, keyword_filter, word_embedding
 
 class Attribute14():
 
+    '''
+    Class containing functions used to perform text classification on Attribute14:
+
+    What scenario has been utilised, and what methodology was applied?
+    '''
+
     def __init__(self):
+        '''
+        Initialization class for Attribute14.
+        It consists of loading the pretrained models that will be used for text
+        classification for Attribute14.
+        '''
         self.lr_model = pickle.load(open('pipeline/models/lr_14_model.sav', 'rb'))
         self.rf_model = pickle.load(open('pipeline/models/rf_14_model.sav', 'rb'))
         self.svc_model = pickle.load(open('pipeline/models/svc_14_model.pkl', 'rb'))
 
     
     def predict(self, df):
+        '''
+        Prediction function to predict if a sentence is relevant to attribute14,
+        using keyword filtering, lemmatization and pretrained models.
+
+        Parameters
+        ----------
+        df: pandas DataFrame
+            The dataframe of sentences that will be used for text classification
+            and prediction to generate relevant sentences.
+
+        Result
+        ------
+        df_ones: pandas DataFrame
+            The resultant dataframe containing the relevant sentences identified,
+            as well as the methodologies that are identified for each sentence.
+        '''
+
+        ## Preprocessing
         df = keyword_filter(df, ['ghg', 'sbti', 'tcfd', 'sasb', r'scope /d'])
         df['preprocessed'] = df['sentence'].apply(lambda x: pre_processing(x))
         if df.empty:
             return df
         X = word_embedding(df, 'preprocessed', 14)
 
+        ## Loading pretrained models
         lr_pred = self.lr_model.predict(X)
         rf_pred = self.rf_model.predict(X)
         svc_pred = self.svc_model.predict(X)
@@ -60,7 +90,8 @@ class Attribute14():
         
         ### return 1s only
         df_ones = df[df['flag'] == 1]
-        
+
+        ## Sentence filtering to know which methodologies is identified for each sentence.
         for index, rows in df_ones.iterrows():
             res = []
             if ('ghg' in rows['sentence'].lower()) or (r'scope \d' in rows['sentence'].lower()):

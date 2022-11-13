@@ -12,11 +12,33 @@ import pandas as pd
 
 import en_core_web_sm
 class AttrGen:
+    
+    '''
+    Attribute Generation class that calls on other attribute function to generate dataframes.
+    This file consolidates all the dataframes in one location to return the dataframe through this class.
+
+    
+    '''
     def __init__(self, df, bert_model='pipeline/bert_model'):
+        '''
+        Method to initialize the Attribute Generation class
+
+        Parameters
+        ----------
+        df: pandas Dataframe
+            The dataframe to be processed to answer the attributes given.
+
+        bert_model: str
+            The model used for BERTQA. If none is given, it is assumed that the bert_model has been preinstalled
+            onto the local computer, and the class will be extracted from the model.
+        '''
         self.df = df
         self.bert_model = bert_model
 
     def run(self):
+        '''
+        Method to run each trained attribute model. 
+        '''
         self.df_7 = Attribute15.Attribute15().predict(self.df)
         self.answer8, self.df_8 = Attribute8.Attribute8().predict(self.df)
         self.answer12, self.df_12 = Attribute12.Attribute12().predict(self.df)
@@ -29,12 +51,36 @@ class AttrGen:
 
     ## Getter functions for each attribute
     def get_df7(self):
+        '''
+        Getter function for attribute 7 in dataframe form.
+
+        Returns
+        -------
+        self.df_7: pandas Dataframe
+            The dataframe generated through text classification for attribute 7:
+            Have your Scope 1 - 2 & Scope 3 emissions been verified by a third party?
+        '''
         cols = list(self.df_7.columns)
         for i in cols:
             print(self.df_7[i])
         return self.df_7
 
     def get_df8(self, answer=True):
+        '''
+        Getter function for attribute 8 in dataframe form.
+
+        Parameters
+        ----------
+        answer: boolean
+            If True, the answer to whether there are any sentences found for attribute 8
+            will be returned
+
+        Returns
+        -------
+        self.df_8: pandas Dataframe
+            The dataframe generated through text classification for attribute 8:
+            Do you have an active program to support increasing green space and promote biodiversity?
+        '''
         cols = list(self.df_8.columns)
         if answer:
             print(self.answer8)
@@ -44,6 +90,21 @@ class AttrGen:
         return self.df_8
 
     def get_df12(self, answer=True):
+        '''
+        Getter function for attribute 12 in dataframe form.
+
+        Parameters
+        ----------
+        answer: boolean
+            If True, the answer to whether there are any sentences found for attribute 12
+            will be returned
+
+        Returns
+        -------
+        self.df_12: pandas Dataframe
+            The dataframe generated through text classification for attribute 12:
+            Do you have a long term (20 30 years) net zero target/commitment?
+        '''
         cols = list(self.df_12.columns)
         if answer:
             print(self.answer12)
@@ -52,6 +113,15 @@ class AttrGen:
         return self.df_12
 
     def get_df14(self):
+        '''
+        Getter function for attribute 14 in dataframe form.
+
+        Returns
+        -------
+        self.df_14: pandas Dataframe
+            The dataframe generated through text classification for attribute 14:
+            What scenario has been utilised, and what methodology was applied?
+        '''
         cols = list(self.df_14.columns)
         for i in cols:
             print(self.df_14[i])
@@ -59,6 +129,15 @@ class AttrGen:
         return self.df_14
     
     def get_df15(self):
+        '''
+        Getter function for attribute 15 in dataframe form.
+
+        Returns
+        -------
+        self.df_15: pandas Dataframe
+            The dataframe generated through text classification for attribute 15:
+            Are your emission reduction targets externally verified/assured? 
+        '''
         cols = list(self.df_15.columns)
         for i in cols:
             print(self.df_15[i])
@@ -66,6 +145,15 @@ class AttrGen:
         return self.df_15
     
     def get_df16(self):
+        '''
+        Getter function for attribute 16 in dataframe form.
+
+        Returns
+        -------
+        self.df_16: pandas Dataframe
+            The dataframe generated through text classification for attribute 16:
+            Do you have a low carbon transition plan? 
+        '''
         cols = list(self.df_16.columns)
         for i in cols:
             print(self.df_16[i])
@@ -73,6 +161,15 @@ class AttrGen:
         return self.df_16
 
     def get_df17(self):
+        '''
+        Getter function for attribute 17 in dataframe form.
+
+        Returns
+        -------
+        self.df_17: pandas Dataframe
+            The dataframe generated through text classification for attribute 17:
+            Do you provide incentives to your senior leadership team for the management of climate related issues? 
+        '''
         cols = list(self.df_17.columns)
         for i in cols:
             print(self.df_17[i])
@@ -80,6 +177,16 @@ class AttrGen:
         return self.df_17
 
     def get_df23(self):
+        '''
+        Getter function for attribute 23 in dataframe form.
+
+        Returns
+        -------
+        self.df_23: pandas Dataframe
+            The dataframe generated through text classification for attribute 23:
+            Does your transition plan include direct engagement with suppliers to drive them to reduce their emissions,
+            or even switching to suppliers producing low carbon materials?
+        '''
         cols = list(self.df_23.columns)
         for i in cols:
             print(self.df_23[i])
@@ -87,6 +194,23 @@ class AttrGen:
         return self.df_23
 
     def get_df25(self, score=True):
+        '''
+        Getter function for attribute 25 in dataframe form.
+
+        Parameters
+        ----------
+        score: Boolean
+            If True, the score for attribute 25 will be returned. The score returned follows a scale with the following meaning:
+            1 - The company has identified climate-related issues.
+            2 - The company has guidelines to monitor and regulate their value chain
+            3 - The company has specific initiatives and works directly with their value chain.
+
+        Returns
+        -------
+        self.df_25: pandas Dataframe
+            The dataframe generated through text classification for attribute 25:
+            Do you engage with your value chain on climate related issues?
+        '''
         cols = list(self.df_25.columns)
         if score:
             print(self.score)
