@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pipeline.attribute_generator as ag
 import pipeline.image_extraction as image_extraction
-from pipeline.pdf_text_extractor import extract_pages_sentences, extract_pdf
+from pipeline.text_extractor import extract_sentences, extract_pdf
 import en_core_web_sm
 
 '''
@@ -18,7 +18,7 @@ if __name__ == '__main__':
     filename = input('What is the name of the file?')
     if filename.endswith('.pdf'):
         corpus = []
-        page_sentence, all_sentence = extract_pages_sentences(extract_pdf(filename), en_core_web_sm.load())
+        page_sentence, all_sentence = extract_sentences(extract_pdf(filename), en_core_web_sm.load())
         corpus.extend(all_sentence)
         df = pd.DataFrame(corpus, columns=['sentence'])
 
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     elif filename.endswith('.csv'):
         df = pd.read_csv(filename)
 
-    torf = input("Have you installed deepset/roberta-base-squad2 into bert_model folder?[Y/N]")
+    torf = input("Have you installed deepset/roberta-base-squad2 into pipeline/bert_model folder?[Y/N]")
     torf = torf.lower()
     if (torf == 'y') or (torf == 'yes'):
         bert_model = 'pipeline/bert_model'

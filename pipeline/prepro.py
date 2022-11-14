@@ -1,71 +1,46 @@
 ### Imports ###
-
-from scipy import spatial
-import math
+## General Imports
+import re
+import io
 import os
-import json
 import string
+import numpy as np
+import pandas as pd
+import pickle
 
 import warnings
 warnings.filterwarnings("ignore")
 
-# PDF text extraction
-from pdfminer3.layout import LAParams, LTTextBox
-from pdfminer3.pdfpage import PDFPage
-from pdfminer3.pdfinterp import PDFResourceManager
-from pdfminer3.pdfinterp import PDFPageInterpreter
-from pdfminer3.converter import PDFPageAggregator
-from pdfminer3.converter import TextConverter
-
-# Others
-import string
-import re
-import io
-
-# Text pre-processing (Tokenization, Stemming, Lemmatization)
+## Text pre-processing (Tokenization, Stemming, Lemmatization)
 import nltk
 from nltk.stem.snowball import SnowballStemmer
 from nltk.stem import PorterStemmer, LancasterStemmer, WordNetLemmatizer
 from nltk.tokenize import TreebankWordTokenizer, RegexpTokenizer, sent_tokenize, word_tokenize
 
-# Pdf Extraction Model
+## Spacy Models
+import spacy
+from spacy.matcher import Matcher 
+from spacy.tokens import Span 
 import en_core_web_sm
 nlp = en_core_web_sm.load()
 
-#Gensim stopwords
+
+## Gensim stopwords
 import gensim
 from gensim.parsing.preprocessing import remove_stopwords
 stopwords = gensim.parsing.preprocessing.STOPWORDS
 
-import numpy as np
-import pandas as pd
-import PyPDF2
-import tabula
-from tabula import read_pdf
-import pdf2image
-
-import pickle
-
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.preprocessing import OneHotEncoder
+## sklearn models
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+## Keras models
 import tensorflow as tf
 import keras
-from keras.models import Sequential, load_model
-from keras.layers import Dense, LSTM, Embedding, Dropout
 from keras.preprocessing.text import Tokenizer
-from keras.preprocessing import sequence
-from keras.utils import pad_sequences
 
+## BERTQA
 import torch
 from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
-
-import spacy
-from spacy.matcher import Matcher 
-from spacy.tokens import Span 
 
 def clean(line):
     '''

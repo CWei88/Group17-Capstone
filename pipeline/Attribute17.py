@@ -4,7 +4,6 @@ import pickle
 
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.base import BaseEstimator
 
 import tensorflow as tf
 from keras.models import load_model, Sequential
