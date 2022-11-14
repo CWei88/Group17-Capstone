@@ -1,10 +1,7 @@
 ######################################### IMPORTING PACAKGES #############################
 # Basic ML Packages
-from scipy import spatial
-import math
 import os
 import json
-import string
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -20,23 +17,9 @@ from pdfminer3.converter import TextConverter
 # Others
 import string
 import re
-from pprint import pprint
-from tqdm.notebook import tqdm
 import io
 
-# Text pre-processing (Tokenization, Stemming, Lemmatization)
-import nltk
-from nltk.tokenize import TreebankWordTokenizer
-from nltk.stem.snowball import SnowballStemmer
-from nltk.stem import WordNetLemmatizer 
-from nltk.tokenize import RegexpTokenizer
-
 import en_core_web_sm
-
-#Gensim stopwords
-import gensim
-from gensim.parsing.preprocessing import remove_stopwords
-stopwords = gensim.parsing.preprocessing.STOPWORDS
 
 
 
@@ -147,70 +130,7 @@ def remove_non_ascii(text):
     printable = set(string.printable) #Convert iterable to set
     return ''.join(filter(lambda x: x in printable, text))
 
-def not_header(line):
-    """
-    Helper Function to remove headers
-    Check if all the characters are in upper case
-    """
-    return not line.isupper()
-
-def extract_sentences(nlp, text):
-    pages = text.split('##PAGE_BREAK##')
-    #print('Number of Pages: {}'.format(len(pages)))
-
-    lines = []
-    for i in range(len(pages)):
-        page_number = i + 1
-        page = pages[i]
-        
-        # remove non ASCII characters
-        text = remove_non_ascii(page)
- 
-        prev = ""
-        for line in text.split('\n\n'):
-            # aggregate consecutive lines where text may be broken down
-            # only if next line starts with a space or previous does not end with dot.
-            if(line.startswith(' ') or not prev.endswith('.')):
-                prev = prev + ' ' + line
-            else:
-                # new paragraph
-                lines.append(prev)
-                prev = line
-
-        # don't forget left-over paragraph
-        lines.append(prev)
-        lines.append('##SAME_PAGE##')
-        
-    lines = '  '.join(lines).split('##SAME_PAGE##')
-    
-    # clean paragraphs from extra space, unwanted characters, urls, etc.
-    # best effort clean up, consider a more versatile cleaner
-    
-    pages_content = []
-    pages_sentences = []
-    all_sentences = []
-
-    for line in lines[:-1]: # looping through each page
-        
-        line = preprocess_lines(line)       
-        pages_content.append(str(line).strip())
-
-        sentences = []
-        # split paragraphs into well defined sentences using spacy
-        for part in list(nlp(line).sents):
-            sentences.append(str(part).strip())
-
-        #sentences += nltk.sent_tokenize(line)
-            
-        # Only interested in full sentences and sentences with 10 to 100 words. --> filter out first page/content page
-        sentences = [s for s in sentences if re.match('^[A-Z][^?!.]*[?.!]$', s) is not None]
-        sentences = [s.replace('\n', ' ') for s in sentences]
-        
-        pages_sentences.append(sentences)
-        all_sentences.extend(sentences)
-    return all_sentences #list of sentences
-
-def extract_pages_sentences(nlp, text):    
+def extract_pages_sentences(text, nlp):    
     """
     Extracting text from raw PDF text and store them by pages and senteces. Raw text is also cleand by removing junk, URLs, etc.
     Consecutive lines are also grouped into paragraphs and spacy is used to parse sentences.
@@ -242,10 +162,6 @@ def extract_pages_sentences(nlp, text):
         # remove non ASCII characters
         text = remove_non_ascii(page)
         
-        # if len(text.split(' ')) < MIN_WORDS_PER_PAGE:
-        #     print(f'Skipped Page: {page_number}')
-        #     continue
-        
         prev = ""
         for line in text.split('\n\n'):
             # aggregate consecutive lines where text may be broken down
@@ -279,8 +195,6 @@ def extract_pages_sentences(nlp, text):
         # split paragraphs into well defined sentences using spacy
         for part in list(nlp(line).sents):
             sentences.append(str(part).strip())
-
-        #sentences += nltk.sent_tokenize(line)
             
         # Only interested in full sentences and sentences with 10 to 100 words. --> filter out first page/content page
         sentences = [s for s in sentences if re.match('^[A-Z][^?!.]*[?.!]$', s) is not None]

@@ -1,11 +1,3 @@
-# PDF text extraction
-from pdfminer3.layout import LAParams, LTTextBox
-from pdfminer3.pdfpage import PDFPage
-from pdfminer3.pdfinterp import PDFResourceManager
-from pdfminer3.pdfinterp import PDFPageInterpreter
-from pdfminer3.converter import PDFPageAggregator
-from pdfminer3.converter import TextConverter
-
 ##Image Extraction
 import numpy as np
 import pandas as pd
@@ -13,7 +5,6 @@ import PyPDF2
 import tabula
 from tabula import read_pdf
 import io
-from functools import reduce
 from pdfminer.high_level import extract_text
 
 import re

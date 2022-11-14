@@ -18,10 +18,9 @@ if __name__ == '__main__':
     filename = input('What is the name of the file?')
     if filename.endswith('.pdf'):
         corpus = []
-        page_sentence, all_sentence = extract_pages_sentences(en_core_web_sm.load(), extract_pdf(filename))
+        page_sentence, all_sentence = extract_pages_sentences(extract_pdf(filename), en_core_web_sm.load())
         corpus.extend(all_sentence)
         df = pd.DataFrame(corpus, columns=['sentence'])
-        print(df)
 
         image_extr = input("Do you want to extract images?[Y/N]")
         image_extr = image_extr.lower()
