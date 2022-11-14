@@ -201,7 +201,34 @@ def keyword_filter(df, keywords, column='sentence'):
     return filtered_df
     
 def word_embedding(df, embed_column, attribute_no, embedding_model='tfidf'):
-    if embedding_model == 'tfidf': ##save fit model and transform here
+    '''
+    Applies word_embedding models onto a dataframe column. Depending on the attribute number that is given, it will apply the
+    corresponding saved tfidf model.
+
+    Parameters
+    -----------
+    df: pandas DataFrame
+        The dataframe to be used for word embedding.
+
+    embed_column: str
+        The column from the dataframe to be used for word embedding.
+
+    attribute_no: int
+        The tfidf model associated to use. The tfidf model that is selected is
+        determined from the attribute_no.
+
+    embedding_model: str
+        The embedding_model to be applied to the dataframe. By default, as only tfidf is
+        supported, only tfidf is accepted. Implemented for flexibility with other
+        word embedding models in the future.
+
+    Returns
+    -------
+    X_encoded: pandas DataFrame
+        The dataframe containing word_embedding.
+    '''
+    ## If embedding model used is tfidf model, corresponding tfidf model will be loaded.
+    if embedding_model == 'tfidf': 
         X = df[embed_column]
         X = X.apply(lambda x: x.lower())
         if attribute_no == 14:
@@ -210,22 +237,46 @@ def word_embedding(df, embed_column, attribute_no, embedding_model='tfidf'):
             tfidf = pickle.load(open('pipeline/models/tfidf_15_model.sav', 'rb'))
         elif attribute_no == 17:
             tfidf = pickle.load(open('pipeline/models/tfidf_17_model.sav', 'rb'))
-        else:
+        else: ## If attribute number is wrong, it means that there is no corresponding trained tfidf model.
             raise Exception(f"Wrong Model used for attribute: {attribute_no}")
         x = tfidf.transform(X)
         X_encoded = pd.DataFrame(x.toarray())
         return X_encoded
-    else:
+    else: ##Used for further expansion of other word embedding models.
         raise Exception("No model found")
         
 def qa_filtering(df, name='pipeline/bert_model'):
+    '''
+    BERTQA model used to generate answers to find which company had audited the carbon emissions
+    of various companies.
+
+    Parameters
+    ----------
+    df: pandas DataFrame
+        The dataframe to be used for BERTQA to answer who had audited the carbon emissions.
+
+    name: str
+        The name of the bert_model to be used. By default, it is assumed that the bert_model
+        has been locally installed, and the bert_model used will be placed in the folder
+        'pipeline/bert_model'
+
+    Returns
+    -------
+    res: pandas DataFrame
+        The resultant dataframe containing the answers to each sentence, to the best
+        of BERTQA's ability.
+    
+    '''
     model_name = name
     nlp = pipeline('question-answering', model=model_name, tokenizer=model_name)
 
     res = []
+    ## Setting up questions to find the company.
     q1 = 'Who audited the targets?'
     q2 = 'Who assured the targets?'
     q3 = 'Who verified the targets?'
+
+    ## Getting answer and score for each sentence.
     for i in df['sentence']:
         QA_1 = {
             'question': q1,
@@ -247,6 +298,7 @@ def qa_filtering(df, name='pipeline/bert_model'):
         ans3 = nlp(QA_3)['answer']
         score3 = nlp(QA_3)['score']
 
+        ## Checking which answer has the highest score, and return the answer with the highest score.
         maxi = max([score1, score2, score3])
         if maxi == score1:
             res.append(ans1)
@@ -257,6 +309,20 @@ def qa_filtering(df, name='pipeline/bert_model'):
     return res
 
 def is_quantitative(x):
+    '''
+    Sentence preprocessing function to find numerical targets for companies working
+    with their suppliers.
+
+    Parameters
+    ----------
+    x: str
+        The sentence used to find numerical targets.
+
+    Returns
+    --------
+    x: str
+        The list of sentences fulfilling the criteria of a set target for suppliers.
+    '''
     x = x.lower()
 
     x = re.sub("[2][0][0-5][0-9]", "", x) #remove years
@@ -270,6 +336,21 @@ def is_quantitative(x):
     return re.search("supplier", x) and len(re.findall(r'\d+', x)) > 0
 
 def stop_words_removal(sentence, stop_words):
+    '''
+    Preprocessing function for each sentence to remove stop_words.
+
+    Parameters
+    ----------
+    sentence: str
+        The sentence to remove stop_words from.
+    stop_words: list of str
+        The list of stop_words to be removed from the sentence.
+
+    Returns
+    -------
+    sentence: str
+        The sentence with the stop_words removed.
+    '''
     words = sentence.split()
     removed_sentence=[]
     for r in words:
@@ -279,6 +360,19 @@ def stop_words_removal(sentence, stop_words):
     return "".join(removed_sentence)
 
 def porter_stemmer(sentence):
+    '''
+    Preprocessing function to apply stemming using PorterStemmer.
+
+    Parameters
+    ----------
+    sentence: str
+        The sentence to apply stemming to.
+
+    Returns
+    -------
+    sentence: str
+        The sentence after stemming.
+    '''
     porter = PorterStemmer()
     token_words=word_tokenize(sentence)
     token_words
@@ -289,6 +383,19 @@ def porter_stemmer(sentence):
     return "".join(stem_sentence)
 
 def custom_standardization(input_data):
-  lowercase = tf.strings.lower(input_data)
-  return tf.strings.regex_replace(lowercase,
+    '''
+    Preprocessing function to remove punctuation in sentences.
+
+    Parameters
+    ----------
+    input_data: str
+        The sentence to remove punctuation from.
+
+    Returns
+    -------
+    sentence: str
+        The sentence after removing punctuation from the sentence.
+    '''
+    lowercase = tf.strings.lower(input_data)
+    return tf.strings.regex_replace(lowercase,
                                   '[%s]' % re.escape(string.punctuation), '')
