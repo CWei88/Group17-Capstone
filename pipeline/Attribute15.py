@@ -3,7 +3,10 @@ import numpy as np
 import pandas as pd
 import pickle
 
-from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.svm import SVC
+
 from pipeline.prepro import pre_processing, keyword_filter, word_embedding, qa_filtering
 
 class Attribute15:

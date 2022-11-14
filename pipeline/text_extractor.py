@@ -3,11 +3,15 @@ import re
 import io
 import string
 
-from pdfminer3.converter import TextConverter
-from pdfminer3.layout import LAParams
-from pdfminer3.pdfdocument import PDFDocument
-from pdfminer3.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer3.pdfpage import PDFPage
+## Remove warnings
+import warnings
+warnings.filterwarnings('ignore')
+
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
+from pdfminer.pdfdocument import PDFDocument
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.pdfpage import PDFPage
 
 import en_core_web_sm
 
@@ -64,23 +68,23 @@ def preprocess(sentence):
         The sentence after preprocessing.
     
     '''
-    # Removes header numbers
+    ## Removes header numbers
     sentence = re.sub(r'^\s?\d+(.*)$', r'\1', sentence)
-    # Strip sentence of trailing whitespace
+    ## Strip sentence of trailing whitespace
     sentence = sentence.strip()
-    # Link back words that have been split in-between lines.
+    ## Link back words that have been split in-between lines.
     sentence = re.sub(r'\s?-\s?', '-', sentence)
-    # Remove space before punctuation
+    ## Remove space before punctuation
     sentence = re.sub(r'\s?([,:;\.])', r'\1', sentence)
-    # ESG contains a lot of figures that are not relevant to grammatical structure
+    ## ESG contains a lot of figures that are not relevant to grammatical structure
     sentence = re.sub(r'\d{5,}', r' ', sentence)
-    # Remove emails from text
+    ## Remove emails from text
     sentence = re.sub(r'\S*@\S*\s?', '', sentence)
-    # Remove URLs from text
+    ## Remove URLs from text
     sentence = re.sub(r'(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*', r' ', sentence)
-    # Consolidate multiple spacing into one
+    ## Consolidate multiple spacing into one
     sentence = re.sub(r'\s+', ' ', sentence)
-    # join next line with space
+    ## join next line with space
     sentence = re.sub(r' \n', ' ', sentence)
     sentence = re.sub(r'.\n', '. ', sentence)
     sentence = re.sub(r'\x0c', ' ', sentence)

@@ -1,20 +1,10 @@
-######################################### IMPORTING PACAKGES #############################
-from scipy import spatial
 import pandas as pd
-import os
-import json
 import numpy as np
-import string
+import re
+import tensorflow as tf
+
 import warnings
 warnings.filterwarnings("ignore")
-import sys  
-import os
-from dateutil.parser import parse
-# Gensim
-import gensim
-import gensim.corpora as corpora
-from gensim.utils import simple_preprocess
-from gensim.models import CoherenceModel
 
 # Others
 import string
@@ -28,8 +18,6 @@ nltk.download('stopwords')
 # NLTK Stop words
 from nltk.corpus import stopwords
 stop_words = stopwords.words('english')
-import en_core_web_sm
-nlp = en_core_web_sm.load(disable=['ner'])
 
 import pickle 
 import tensorflow as tf

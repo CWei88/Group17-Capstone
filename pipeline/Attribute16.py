@@ -1,11 +1,9 @@
-from sklearn.base import BaseEstimator
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import TfidfVectorizer
-# from sklearn.utils.validation import check_is_fitted
-from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 import pickle
+
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 import nltk
 from nltk.stem.snowball import SnowballStemmer
@@ -66,6 +64,9 @@ class Attribute16:
         ----------
         df: pandas Dataframe
             The dataframe of sentences that will be used to predict.
+
+        column: str
+            The column that will be used to predict Attribute 16 in the dataframe.
 
         Returns
         -------

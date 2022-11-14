@@ -1,27 +1,12 @@
-######################################### IMPORTING PACAKGES #############################
-from scipy import spatial
 import pandas as pd
-import os
-import json
 import numpy as np
-import string
-import warnings
-warnings.filterwarnings("ignore")
-import sys  
-import os
-from dateutil.parser import parse
-# Gensim
-import gensim
-import gensim.corpora as corpora
-from gensim.utils import simple_preprocess
-from gensim.models import CoherenceModel
-
-# Others
-import string
 import re
-import io
 import tensorflow as tf
 
+import warnings
+warnings.filterwarnings("ignore")
+
+## Nltk imports
 import nltk
 from nltk.stem.snowball import SnowballStemmer
 nltk.download('stopwords')
@@ -29,15 +14,12 @@ nltk.download('stopwords')
 # NLTK Stop words
 from nltk.corpus import stopwords
 stop_words = stopwords.words('english')
-import en_core_web_sm
-nlp = en_core_web_sm.load(disable=['ner'])
 
 import pickle 
 
 from pipeline.prepro import pre_processing, keyword_filter, stop_words_removal, porter_stemmer, custom_standardization
 
 class Attribute8:
-
     '''
     This class utilises pretrained models to generate sentences related to
     attribute 8:
@@ -84,7 +66,7 @@ class Attribute8:
             return df
         df = df.reset_index()
         df['sentence1'] = df[column].apply(lambda x:tf.compat.as_str_any(custom_standardization(x).numpy()))
-        df['sentence1'] = df['sentence1'].apply(lambda x:stop_words_removal(str(x), stop_words))
+        df['sentence1'] = df['sentence1'].apply(lambda x:stop_words_removal(str(x), self.stop_words))
         df['sentence1'] = df['sentence1'].apply(lambda x:porter_stemmer(str(x)))
         X = self.vectorizer.transform(df['sentence'])
 

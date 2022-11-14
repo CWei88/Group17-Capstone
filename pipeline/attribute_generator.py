@@ -17,7 +17,6 @@ class AttrGen:
     Attribute Generation class that calls on other attribute function to generate dataframes.
     This file consolidates all the dataframes in one location to return the dataframe through this class.
 
-    
     '''
     def __init__(self, df, bert_model='pipeline/bert_model'):
         '''

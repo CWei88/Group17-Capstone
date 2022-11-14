@@ -30,7 +30,6 @@ class Attribute23:
     def __init__(self):
         '''
         The initialization function for Attribute 23, consisting of loading pretrained models.
-
         '''
         self.relevance_vectorizer = pickle.load(open('pipeline/models/relevance_vectorizer.pkl', 'rb'))
         self.relevance_model = pickle.load(open('pipeline/models/relevance_rf.pkl', 'rb'))

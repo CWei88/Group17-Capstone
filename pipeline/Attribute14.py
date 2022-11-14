@@ -1,40 +1,28 @@
 ### Imports ###
-
-import math
-import warnings
 import numpy as np
 import pandas as pd
+import warnings
 warnings.filterwarnings("ignore")
-
-# Others
-import string
 import re
 
-# Text pre-processing (Tokenization, Stemming, Lemmatization)
+## Text pre-processing
 import nltk
 from nltk.tokenize import TreebankWordTokenizer
 from nltk.stem.snowball import SnowballStemmer
-from nltk.tokenize import RegexpTokenizer
 
 import pickle
 
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
-
-from imblearn.over_sampling import RandomOverSampler
+from sklearn.svm import SVC
 
 import spacy
-from spacy.matcher import Matcher 
-from spacy.tokens import Span 
 import en_core_web_sm
-nlp = en_core_web_sm.load()
 
 from pipeline.prepro import pre_processing, keyword_filter, word_embedding
 
 class Attribute14():
-
     '''
     Class containing functions used to perform text classification on Attribute14:
 
@@ -77,7 +65,7 @@ class Attribute14():
             return df
         X = word_embedding(df, 'preprocessed', 14)
 
-        ## Loading pretrained models
+        ## Predicting with pretrained models
         lr_pred = self.lr_model.predict(X)
         rf_pred = self.rf_model.predict(X)
         svc_pred = self.svc_model.predict(X)

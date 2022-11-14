@@ -2,15 +2,7 @@ import pandas as pd
 import numpy as np
 import pickle
 
-from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import AdaBoostClassifier
-
-import tensorflow as tf
-from keras.models import load_model, Sequential
-from keras.layers import Dense, LSTM, Embedding, Dropout
-from keras.preprocessing.text import Tokenizer
-from keras.preprocessing import sequence
-from keras.utils import pad_sequences
 
 from pipeline.prepro import pre_processing, keyword_filter, word_embedding
 
@@ -20,6 +12,7 @@ class Attribute17:
 
     Do you provide incentives to your senior leadership team for the management of climate related issues?
     '''
+    
     def __init__(self):
         '''
         Initialization function for Attribute 17.
