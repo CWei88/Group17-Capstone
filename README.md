@@ -20,6 +20,11 @@ To run the application, please use either of the following command with either t
 
 and follow the instructions displayed on the command prompt/terminal.
 
+## Dashboard
+The outputs of this python process will be put into our dashboard to generate better insights on both company-based analysis and sector-based analysis. Our dashboard and the installation instrutions are linked in this Github below:
+
+[Dashboard](https://github.com/fancasta/Capstone-Dashboard)
+
 ## Built with
 * [gensim](https://github.com/RaRe-Technologies/gensim)
 * [keras](https://keras.io/)
