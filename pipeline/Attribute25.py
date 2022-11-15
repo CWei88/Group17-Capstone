@@ -55,6 +55,8 @@ class Attribute25:
         df: pandas DataFrame
             The dataframe containing a list of predicted sentences, as well as the label for each corresponding sentence.
         '''
+        if X.empty:
+            return X
         X_vec = pd.DataFrame(vectorizer.transform(X['preprocessed']).todense(), columns=vectorizer.get_feature_names_out())
         y_pred = model.predict(X_vec)
         df = pd.DataFrame({'sentence': X['sentence'],'preprocessed': X['preprocessed'], 'pred_label': y_pred})
@@ -99,7 +101,10 @@ class Attribute25:
         relevance['quantitative'] = relevance['sentence'].apply(lambda x: is_quantitative(x))
         relevant = pd.DataFrame(relevance[relevance['pred_label'] == True]['sentence'])
         attribute_23 = pd.DataFrame(relevance[(relevance['quantitative'] == True) & (relevance['pred_label'] == True)]['sentence'])
-        attribute_25 = list(set(scale['pred_label']))
+        if scale.empty:
+            attribute_25 = [0]
+        else:
+            attribute_25 = list(set(scale['pred_label']))
 
         print('# Relevant sentences found: ' + str(relevant.shape[0]))
 
