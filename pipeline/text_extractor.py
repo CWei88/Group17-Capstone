@@ -76,12 +76,10 @@ def preprocess(sentence):
     sentence = re.sub(r'\s?-\s?', '-', sentence)
     ## Remove space before punctuation
     sentence = re.sub(r'\s?([,:;\.])', r'\1', sentence)
-    ## ESG contains a lot of figures that are not relevant to grammatical structure
-    sentence = re.sub(r'\d{5,}', r' ', sentence)
     ## Remove emails from text
     sentence = re.sub(r'\S*@\S*\s?', '', sentence)
     ## Remove URLs from text
-    sentence = re.sub(r'(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*', r' ', sentence)
+    sentence = re.sub(r'(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*', ' ', sentence)
     ## Consolidate multiple spacing into one
     sentence = re.sub(r'\s+', ' ', sentence)
     ## join next line with space
@@ -129,8 +127,8 @@ def extract_sentences(text, nlp_model=en_core_web_sm.load()):
         prev_line = ""
         for line in text.split('\n\n'):
             ## Combines consecutive lines where text may have been broken up,
-            ## provided that the next line has a space at the start, and the previous line does not
-            ## end with a full stop.
+            ## provided that the next line has a space at the start, and the previous line
+            ## does not end with a full stop.
             if (line.startswith(' ') or not prev_line.endswith('.')):
                 prev_line = prev_line + ' ' + line
             else: ## If condition is not met, we start a new index.
@@ -139,9 +137,9 @@ def extract_sentences(text, nlp_model=en_core_web_sm.load()):
 
         ## Ensures that the last line is stored into the array.
         sentences.append(prev_line)
-        sentences.append('##PAGE_BREAK##')
+        sentences.append('##END_OF_SENTENCE##')
 
-    final_sentences = ' '.join(sentences).split('##PAGE_BREAK##')
+    final_sentences = ' '.join(sentences).split('##END_OF_SENTENCE##')
 
     page_sentences = []
     all_sentences = []
@@ -152,7 +150,8 @@ def extract_sentences(text, nlp_model=en_core_web_sm.load()):
         words = []
         ## parses paragraph into sentences using spacy.
         for partial in list(nlp_model(line).sents):
-            words.append(str(partial).strip())
+            p = str(partial).strip()
+            words.append(p)
 
         w_res = []
         for w in words:
