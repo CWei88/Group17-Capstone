@@ -88,7 +88,8 @@ class ImageExtractor:
             output_name = self.pdf.split('/')[-1]
             output_name = output_name.split('.')[0]
             output = output_name + '_page_' + str(i) + '.png'
-            pix.save(output_path + '/' + output)
+            out = output_path + '/' + output
+            pix.save(out)
             #pdf2image.convert_from_path(self.pdf, output_folder = output_path, fmt='png', first_page = i, last_page = i, output_file = str(self.pdf).split('.')[0] + str(i))
         
         print('Finished with file: ' + self.pdf)
