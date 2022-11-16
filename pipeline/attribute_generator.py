@@ -18,7 +18,7 @@ class AttrGen:
     This file consolidates all the dataframes in one location to return the dataframe through this class.
 
     '''
-    def __init__(self, df, bert_model='pipeline/bert_model'):
+    def __init__(self, df, bert_model='deepset/roberta-base-squad2'):
         '''
         Method to initialize the Attribute Generation class
 
@@ -28,7 +28,7 @@ class AttrGen:
             The dataframe to be processed to answer the attributes given.
 
         bert_model: str
-            The model used for BERTQA. If none is given, it is assumed that the bert_model has been preinstalled
+            The model used for BERTQA. If none is given, it is assumed that the bert_model has not been preinstalled
             onto the local computer, and the class will be extracted from the model.
         '''
         self.df = df

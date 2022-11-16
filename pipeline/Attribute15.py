@@ -17,7 +17,7 @@ class Attribute15:
     Are your emission reduction targets externally verified/assured? 
     '''
 
-    def __init__(self, bert_model='pipeline/bert_model'):
+    def __init__(self, bert_model='deepset/roberta-base-squad2'):
         '''
         Initialization function for Attribute15.
         It loads the pretrained mdoels for Attribute15, as well as the bert_model to be used
@@ -27,7 +27,7 @@ class Attribute15:
         ----------
         bert_model: str
             The bert_model to be used for BERTQA. By default, it assumes that the bert_model
-            has been preinstalled in the bert_model folder, and will be using the folder
+            has not been preinstalled in the bert_model folder, and will be using the folder
             to pretrain the bert_model to identify companies performing external verification.
         '''
         self.ada = pickle.load(open('pipeline/models/ada_15_model.pkl', 'rb'))

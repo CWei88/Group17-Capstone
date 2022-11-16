@@ -31,6 +31,8 @@ if __name__ == '__main__':
     
     elif filename.endswith('.csv'):
         df = pd.read_csv(filename)
+    else:
+        raise FileNotFoundError("File format not supported")
 
     torf = input("Have you installed deepset/roberta-base-squad2 into pipeline/bert_model folder?[Y/N]")
     torf = torf.lower()
