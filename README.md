@@ -42,10 +42,6 @@ The outputs of this python process will be put into our dashboard to generate be
 * [tensorflow](https://www.tensorflow.org/)
 * [transformers](https://pytorch.org/hub/huggingface_pytorch-transformers/)
 
-We would also like to thank Team08 for their help in the pdf text extraction process.
-
-* [Github](https://github.com/jaokuean/team08-capstone)
-
 ## Contributors
 * Png Chen Wei
 * Ng Shu Hui
