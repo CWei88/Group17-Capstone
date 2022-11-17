@@ -72,6 +72,8 @@ def preprocess(sentence):
     sentence = re.sub(r'^\s?\d+(.*)$', r'\1', sentence)
     ## Strip sentence of trailing whitespace
     sentence = sentence.strip()
+    ## Link back words that have been split in-between lines.
+    sentence = re.sub(r'\s?-\s?', '-', sentence)
     ## Remove space before punctuation
     sentence = re.sub(r'\s([?.!"](?:\s|$))', r'\1', sentence)
     ## Remove emails from text
