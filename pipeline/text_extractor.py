@@ -141,10 +141,12 @@ def extract_sentences(text, nlp_model=en_core_web_sm.load()):
 
     final_sentences = ' '.join(sentences).split('##END_OF_SENTENCE##')
 
-    page_sentences = []
+    page_sentences = {}
     all_sentences = []
+    page = 1
     
     for line in final_sentences:
+        page_sentences[page] = []
         line = preprocess(line)
 
         words = []
@@ -162,8 +164,9 @@ def extract_sentences(text, nlp_model=en_core_web_sm.load()):
 
         w_res = [x.replace('\n', ' ') for x in w_res] ## Replace new line tag with blank.
 
-        page_sentences.append(w_res)
+        page_sentences[page].append(w_res)
         all_sentences.extend(w_res)
+        page += 1
 
     return page_sentences, all_sentences
             

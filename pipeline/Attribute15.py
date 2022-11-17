@@ -91,7 +91,7 @@ class Attribute15:
             if not df_verified.empty:
                 res = qa_filtering(df_verified, self.bert_model)
                 df_verified['auditors'] = res
-                df_verified = df_verified[['sentence', 'auditors', 'further_flag']]
+                df_verified = df_verified[['sentence', 'auditors', 'page', 'further_flag']]
                 return df_verified
             else:
                 print("Unable to conduct further separation. Original separation will be used instead.")

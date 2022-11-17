@@ -220,7 +220,7 @@ def word_embedding(df, embed_column, attribute_no, embedding_model='tfidf'):
     else: ##Used for further expansion of other word embedding models.
         raise Exception("No model found")
         
-def qa_filtering(df, name='pipeline/bert_model'):
+def qa_filtering(df, name='deepset/roberta-base-squad2'):
     '''
     BERTQA model used to generate answers to find which company had audited the carbon emissions
     of various companies.

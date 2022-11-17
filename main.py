@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
+import warnings
+warnings.filterwarnings('ignore')
+
 import pipeline.attribute_generator as ag
 import pipeline.image_extraction as image_extraction
 from pipeline.text_extractor import extract_sentences, extract_pdf
@@ -18,7 +21,7 @@ if __name__ == '__main__':
     filename = input('What is the name of the file?')
     if filename.endswith('.pdf'):
         corpus = []
-        page_sentence, all_sentence = extract_sentences(extract_pdf(filename), en_core_web_sm.load())
+        page_sentences, all_sentence = extract_sentences(extract_pdf(filename), en_core_web_sm.load())
         corpus.extend(all_sentence)
         df = pd.DataFrame(corpus, columns=['sentence'])
 

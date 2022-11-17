@@ -38,7 +38,7 @@ class AttrGen:
         '''
         Method to run each trained attribute model. 
         '''
-        self.df_7 = Attribute15.Attribute15().predict(self.df)
+        self.df_7 = Attribute15.Attribute15(self.bert_model).predict(self.df)
         self.answer8, self.df_8 = Attribute8.Attribute8().predict(self.df)
         self.answer12, self.df_12 = Attribute12.Attribute12().predict(self.df)
         self.df_14 = Attribute14.Attribute14().predict(self.df)
@@ -59,9 +59,6 @@ class AttrGen:
             The dataframe generated through text classification for attribute 7:
             Have your Scope 1 - 2 & Scope 3 emissions been verified by a third party?
         '''
-        cols = list(self.df_7.columns)
-        for i in cols:
-            print(self.df_7[i])
         return self.df_7
 
     def get_df8(self, answer=True):
@@ -80,12 +77,8 @@ class AttrGen:
             The dataframe generated through text classification for attribute 8:
             Do you have an active program to support increasing green space and promote biodiversity?
         '''
-        cols = list(self.df_8.columns)
         if answer:
             print(self.answer8)
-        for i in cols:
-            print(self.df_8[i])
-
         return self.df_8
 
     def get_df12(self, answer=True):
@@ -104,11 +97,8 @@ class AttrGen:
             The dataframe generated through text classification for attribute 12:
             Do you have a long term (20 30 years) net zero target/commitment?
         '''
-        cols = list(self.df_12.columns)
         if answer:
             print(self.answer12)
-        for i in cols:
-            print(self.df_12[i])
         return self.df_12
 
     def get_df14(self):
@@ -121,10 +111,6 @@ class AttrGen:
             The dataframe generated through text classification for attribute 14:
             What scenario has been utilised, and what methodology was applied?
         '''
-        cols = list(self.df_14.columns)
-        for i in cols:
-            print(self.df_14[i])
-
         return self.df_14
     
     def get_df15(self):
@@ -137,9 +123,6 @@ class AttrGen:
             The dataframe generated through text classification for attribute 15:
             Are your emission reduction targets externally verified/assured? 
         '''
-        cols = list(self.df_15.columns)
-        for i in cols:
-            print(self.df_15[i])
 
         return self.df_15
     
@@ -153,9 +136,6 @@ class AttrGen:
             The dataframe generated through text classification for attribute 16:
             Do you have a low carbon transition plan? 
         '''
-        cols = list(self.df_16.columns)
-        for i in cols:
-            print(self.df_16[i])
 
         return self.df_16
 
@@ -169,9 +149,6 @@ class AttrGen:
             The dataframe generated through text classification for attribute 17:
             Do you provide incentives to your senior leadership team for the management of climate related issues? 
         '''
-        cols = list(self.df_17.columns)
-        for i in cols:
-            print(self.df_17[i])
 
         return self.df_17
 
@@ -186,9 +163,6 @@ class AttrGen:
             Does your transition plan include direct engagement with suppliers to drive them to reduce their emissions,
             or even switching to suppliers producing low carbon materials?
         '''
-        cols = list(self.df_23.columns)
-        for i in cols:
-            print(self.df_23[i])
 
         return self.df_23
 
@@ -210,11 +184,8 @@ class AttrGen:
             The dataframe generated through text classification for attribute 25:
             Do you engage with your value chain on climate related issues?
         '''
-        cols = list(self.df_25.columns)
         if score:
             print(self.score)
-        for i in cols:
-            print(self.df_25[i])
 
         return self.df_25
         
