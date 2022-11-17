@@ -68,14 +68,12 @@ def preprocess(sentence):
         The sentence after preprocessing.
     
     '''
-    ## Removes header numbers
+    ## Removes headers and content pages.
     sentence = re.sub(r'^\s?\d+(.*)$', r'\1', sentence)
     ## Strip sentence of trailing whitespace
     sentence = sentence.strip()
-    ## Link back words that have been split in-between lines.
-    sentence = re.sub(r'\s?-\s?', '-', sentence)
     ## Remove space before punctuation
-    sentence = re.sub(r'\s?([,:;\.])', r'\1', sentence)
+    sentence = re.sub(r'\s([?.!"](?:\s|$))', r'\1', sentence)
     ## Remove emails from text
     sentence = re.sub(r'\S*@\S*\s?', '', sentence)
     ## Remove URLs from text
